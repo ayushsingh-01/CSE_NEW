@@ -19,6 +19,8 @@ async function fetchProducts(limit = 30) {
 
         allProducts = data.products;
         displayProducts(allProducts);
+
+
     } catch (error) {
         console.error('Error fetching products:', error);
         productListElement.innerHTML = '<p>Failed to load products.</p>';
@@ -39,17 +41,21 @@ function displayProducts(products) {
         `;
 
         productListElement.appendChild(productCard);
+
+        productCard.addEventListener('click', () => {
+            console.log(`Product clicked: ${product.title}`);
+            window.location.href = `product_details.html?id=${product.id}`;
+        });
     });
 }
 
 function saveSearch(term) {
-    // Check if the query already exists in our history objects
     const exists = searchHistory.some(item => item.query === term);
     
     if (!exists) {
         const historyEntry = {
             query: term,
-            time: Date.now() // Returns timestamp like 1769745730266
+            time: Date.now()
         };
         
         searchHistory.push(historyEntry);
@@ -99,6 +105,8 @@ searchButton.addEventListener('click', () => {
     displayProducts(filtered);
 });
 
+
+
 searchInput.addEventListener('input', showSuggestions);
 
-fetchProducts(250);
+fetchProducts(200);

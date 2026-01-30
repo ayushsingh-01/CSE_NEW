@@ -5,30 +5,30 @@ body {
     padding: 0;
 }
 
-/* header {
+header {
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-} */
+}
 
-/* .search-bar input {
+.search-bar input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 10px;
-} */
+}
 
-/* .search-bar button {
+.search-bar button {
     padding: 10px 15px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-} */
+}
 
 main {
     display: grid;

@@ -1,16 +1,18 @@
+let allProducts = [];
 const productListElement = document.getElementById('product-list');
 async function fetchProducts() {
     try {
         const response = await fetch('https://dummyjson.com/products');
         const data = await response.json();
-        const products = data.products;
 
-        displayProducts(products);
+        allProducts = data.products;   // store globally
+        displayProducts(allProducts);
     } catch (error) {
         console.error('Error fetching products:', error);
         productListElement.innerHTML = '<p>Failed to load products.</p>';
     }
 }
+
 function displayProducts(products) {
     productListElement.innerHTML = '';
 
@@ -28,5 +30,14 @@ function displayProducts(products) {
 fetchProducts();
 document.getElementById('search-button').addEventListener('click', () => {
     const searchTerm = document.getElementById('search-input').value;
-    alert(`Searching for: ${searchTerm}`);
+    
+});
+document.getElementById('search-button').addEventListener('click', () => {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+    const filteredProducts = allProducts.filter(product =>
+        product.title.toLowerCase().includes(searchTerm)
+    );
+
+    displayProducts(filteredProducts);
 });

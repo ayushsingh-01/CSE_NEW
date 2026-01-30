@@ -22,7 +22,8 @@
         <table id="history-table">
             <thead>
                 <tr>
-                    <th>Search Term</th>
+                    <th>Type</th>
+                    <th>Name</th>
                     <th>Date & Time</th>
                 </tr>
             </thead>
@@ -35,26 +36,66 @@
         const clearBtn = document.getElementById('clear-btn');
 
         function loadHistory() {
-            const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
             historyBody.innerHTML = '';
 
+            const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+            const viewHistory = JSON.parse(localStorage.getItem('viewHistory')) || [];
+
+            let combinedHistory = [];
+
             searchHistory.forEach(item => {
-                const row = document.createElement('tr');
-                const dateStr = new Date(item.time).toLocaleString();
-                row.innerHTML = `
-                    <td><strong>${item.query}</strong></td>
-                    <td>${dateStr}</td>
-                `;
-                historyBody.appendChild(row);
+                combinedHistory.push({
+                    type: "Search",
+                    name: item.query,
+                    time: item.time
+                });
             });
 
-            if (searchHistory.length === 0) {
-                historyBody.innerHTML = '<tr><td colspan="2" style="text-align:center;">No history found.</td></tr>';
+            viewHistory.forEach(item => {
+                combinedHistory.push({
+                    type: "Product View",
+                    name: item.title,
+                    time: item.time
+                });
+            });
+
+            combinedHistory.sort((a, b) => b.time - a.time);
+
+            if (combinedHistory.length === 0) {
+                historyBody.innerHTML =
+                    '<tr><td colspan="3" style="text-align:center;">No history found.</td></tr>';
+                return;
             }
+
+            combinedHistory.forEach(item => {
+                const row = document.createElement('tr');
+                const dateStr = new Date(item.time).toLocaleString();
+
+                row.innerHTML = `
+                    <td>${item.type}</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${dateStr}</td>
+                `;
+
+                row.style.cursor = 'pointer';
+                row.addEventListener('click', () => {
+                    if (item.type === 'Search') {
+                        // Redirect to main page and perform search
+                        window.location.href = `index.html?search=${encodeURIComponent(item.name)}`;
+                    } else if (item.type === 'Product View') {
+                        // Redirect to product details page
+                        window.location.href = `product_details.html?id=${item.productId}`;
+                    }
+                });
+
+                historyBody.appendChild(row);
+            });
         }
 
         clearBtn.addEventListener('click', () => {
             localStorage.removeItem('searchHistory');
+            localStorage.removeItem('viewHistory');
             loadHistory();
         });
 

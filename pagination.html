@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .content {
+            margin-bottom: 20px;
+        }
+        .pagination {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+        }
+        .pagination a:hover {
+            background-color: #f0f0f0;
+        }
+        .pagination .active {
+            background-color: #ff8000;
+            color: white;
+            border-color: #ff8000;
+        }
+        .pagination .disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="content" id="content"></div>
+    <div class="pagination" id="pagination"></div>
+    <div style="text-align: center; margin-top: 15px; font-weight: bold;">
+        <span id="page-info">Page <span id="current-page">1</span> of <span id="total-pages">0</span></span>
+    </div>
+
+    <script>
+        const itemsPerPage = 5;
+        const totalItems = 47;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        let currentPage = 1;
+
+        function displayPage(page) {
+            const start = (page - 1) * itemsPerPage + 1;
+            const end = Math.min(page * itemsPerPage, totalItems);
+            document.getElementById('content').innerHTML = `<p>Showing items ${start} - ${end} of ${totalItems}</p>`;
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('a');
+                btn.textContent = i;
+                btn.className = i === currentPage ? 'active' : '';
+                btn.onclick = () => {
+                    currentPage = i;
+                    displayPage(currentPage);
+                };
+                pagination.appendChild(btn);
+            }
+
+            document.getElementById('current-page').textContent = currentPage;
+            document.getElementById('total-pages').textContent = totalPages;
+        }
+
+        displayPage(1);
+    </script>
+</body>
+</html>

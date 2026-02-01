@@ -4,53 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search History</title>
-    <style>
-        body { font-family:cursive; background-color: #f4f4f9; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #00ab61; color: white; }
-        tr:hover { background-color: #f1f1f1; }
-        #clear-btn { display: block; width: 100%; padding: 10px; margin-top: 20px; background: #dc3545; color: white; border: none; cursor: pointer; border-radius: 20px; }
-        #clear-btn:hover { background: #c82333; font-family:cursive;}
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Search History Log</h1>
-        <table id="history-table">
+        <h1 class="page-title">Search History Log</h1>
+        <table id="history-table" class="history-table">
             <thead>
                 <tr>
-                    <th>Search Term</th>
+                    <th>Type</th>
+                    <th>Name</th>
                     <th>Date & Time</th>
                 </tr>
             </thead>
             <tbody id="history-body"></tbody>
         </table>
         <button id="clear-btn">Clear All History</button>
+        <a class="home" href="index.html">← Back to Store</a>
     </div>
     <script>
         const historyBody = document.getElementById('history-body');
         const clearBtn = document.getElementById('clear-btn');
 
         function loadHistory() {
-            const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
             historyBody.innerHTML = '';
 
+            const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+            let combinedHistory = [];
+
             searchHistory.forEach(item => {
-                const row = document.createElement('tr');
-                const dateStr = new Date(item.time).toLocaleString();
-                row.innerHTML = `
-                    <td><strong>${item.query}</strong></td>
-                    <td>${dateStr}</td>
-                `;
-                historyBody.appendChild(row);
+                combinedHistory.push({
+                    type: "Search",
+                    name: item.query,
+                    time: item.time
+                });
             });
 
-            if (searchHistory.length === 0) {
-                historyBody.innerHTML = '<tr><td colspan="2" style="text-align:center;">No history found.</td></tr>';
+            combinedHistory.sort((a, b) => b.time - a.time);
+
+            if (combinedHistory.length === 0) {
+                historyBody.innerHTML = '<tr class="empty-row"><td colspan="3">No history found.</td></tr>';
+                return;
             }
+
+            combinedHistory.forEach(item => {
+                const row = document.createElement('tr');
+                const dateStr = new Date(item.time).toLocaleString();
+
+                row.innerHTML = `
+                    <td>${item.type}</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${dateStr}</td>
+                `;
+
+                row.classList.add('clickable-row');
+                row.addEventListener('click', () => {
+                    if (item.type === 'Search') {
+                        // Redirect to main page and perform search
+                        window.location.href = `index.html?search=${encodeURIComponent(item.name)}`;
+                    } else if (item.type === 'Product View') {
+                        // Redirect to product details page
+                        window.location.href = `product_details.html?id=${item.productId}`;
+                    }
+                });
+
+                historyBody.appendChild(row);
+            });
         }
 
         clearBtn.addEventListener('click', () => {

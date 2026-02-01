@@ -4,10 +4,12 @@ const searchButton = document.getElementById('search-button');
 const suggestionBox = document.getElementById('suggestions');
 
 let allProducts = [];
-// Load raw history as an array of objects
+let filteredProducts = [];
 let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
 
-// If you need a simple list for suggestions, map the queries out
+const itemsPerPage = 12;
+let currentPage = 1;
+
 function getQueryList() {
     return searchHistory.map(item => item.query);
 }
@@ -20,6 +22,12 @@ async function fetchProducts(limit = 30) {
         allProducts = data.products;
         displayProducts(allProducts);
 
+        const params = new URLSearchParams(window.location.search);
+        const searchQuery = params.get('search');
+        if (searchQuery) {
+            searchInput.value = decodeURIComponent(searchQuery);
+            searchButton.click();
+        }
 
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -28,9 +36,18 @@ async function fetchProducts(limit = 30) {
 }
 
 function displayProducts(products) {
-    productListElement.innerHTML = '';
+    filteredProducts = products;
+    currentPage = 1;
+    displayPage(currentPage);
+}
 
-    products.forEach(product => {
+function displayPage(page) {
+    productListElement.innerHTML = '';
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const productsToShow = filteredProducts.slice(start, end);
+
+    productsToShow.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
 
@@ -43,10 +60,39 @@ function displayProducts(products) {
         productListElement.appendChild(productCard);
 
         productCard.addEventListener('click', () => {
-            console.log(`Product clicked: ${product.title}`);
+            const viewHistory = JSON.parse(localStorage.getItem('viewHistory')) || [];
+            viewHistory.push({
+                title: product.title,
+                productId: product.id,
+                time: Date.now()
+            });
+            localStorage.setItem('viewHistory', JSON.stringify(viewHistory));
             window.location.href = `product_details.html?id=${product.id}`;
         });
     });
+
+    renderPagination();
+}
+
+function renderPagination() {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('a');
+        btn.textContent = i;
+        btn.className = i === currentPage ? 'active' : '';
+        btn.onclick = () => {
+            currentPage = i;
+            displayPage(currentPage);
+            window.scrollTo(0, 0);
+        };
+        pagination.appendChild(btn);
+    }
+
+    document.getElementById('current-page').textContent = currentPage;
+    document.getElementById('total-pages').textContent = totalPages;
 }
 
 function saveSearch(term) {
@@ -105,7 +151,7 @@ searchButton.addEventListener('click', () => {
     displayProducts(filtered);
 });
 
-
+fetchProducts();
 
 searchInput.addEventListener('input', showSuggestions);
 

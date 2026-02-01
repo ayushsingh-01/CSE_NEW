@@ -8,18 +8,27 @@
 </head>
 <body>
     <header>
-        <h1 style="font-family: cursive;">Totally Legit Product Store 🙂‍↕️</h1>
-        <div class="search-bar" style="position: relative;">
-    <input type="text" id="search-input" placeholder="Search Your Product Here">
-    <button id="search-button">Search</button>
-
-    <ul id="suggestions"></ul>
+        <h1 class="page-title">Totally Legit Product Store 🙂‍↕️</h1>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="product_history.html">Product History</a>
+                <a href="history.html">Search & View History</a>
+            </nav>
+            <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search Your Product Here">
+        <button id="search-button">Search</button>
+        <ul id="suggestions"></ul>
 </div>
 
+        
+    </div>
     </header>
 
     <main id="product-list"></main>
-
+    <div class="pagination" id="pagination"></div>
+    <div class="page-info">
+        <span id="page-info">Page <span id="current-page">1</span> of <span id="total-pages">0</span></span>
+    </div>
     <script src="main.js"></script>
 </body>
 </html>

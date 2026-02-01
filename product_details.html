@@ -1,123 +1,21 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        body {
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .product-container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-container img {
-            width: 100%;
-            max-height: 350px;
-            object-fit: contain;
-            margin-bottom: 20px;
-        }
-
-        .product-container h2 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #000000;
-            margin-bottom: 10px;
-        }
-
-        .description {
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            padding: 10px 16px;
-            background-color: #1976d2;
-            color: #fff;
-            border-radius: 5px;
-        }
-
-        .back-btn:hover {
-            background-color: #125aa0;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Product Details</h1>
-
-    <div class="product-container" id="product"></div>
-
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const productId = params.get('id');
-
-        fetch(`https://dummyjson.com/products/${productId}`)
-            .then(response => response.json())
-            .then(product => {
-                document.getElementById('product').innerHTML = `
-                    <h2>${product.title}</h2>
-                    <img src="${product.thumbnail}" alt="${product.title}">
-                    <p class="price">₹ ${product.price}</p>
-                    <p class="description">${product.description}</p>
-                    <a href="index.html" class="back-btn">← Back to Products</a>
-                `;
-            })
-            .catch(error => {
-                document.getElementById('product').innerHTML =
-                    `<p>Error loading product details.</p>`;
-                console.error(error);
-            });
-    </script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
-
+    <link rel="stylesheet" href="style.css">
     <style>
         * {
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: cursive;
         }
 
         body {
             background: #f1f3f6;
             margin: 0;
             padding: 20px;
+            font-family: cursive;
         }
 
         .container {
@@ -139,43 +37,51 @@
         .product-info h1 {
             font-size: 26px;
             margin-bottom: 10px;
+            font-family: cursive;
         }
 
         .brand {
             color: #555;
             margin-bottom: 10px;
+            font-family: cursive;
         }
 
         .rating {
             color: #ff9800;
             margin-bottom: 10px;
+            font-family: cursive;
         }
 
         .price {
             font-size: 26px;
             color: #2e7d32;
             font-weight: bold;
+            font-family: cursive;
         }
 
         .discount {
             color: #d32f2f;
             font-size: 14px;
+            font-family: cursive;
         }
 
         .description {
             margin: 15px 0;
             line-height: 1.6;
+            font-family: cursive;
         }
 
         .meta p {
             margin: 6px 0;
             font-size: 14px;
+            font-family: cursive;
         }
 
         .availability {
             font-weight: bold;
             color: green;
             margin: 10px 0;
+            font-family: cursive;
         }
 
         .cart-box {
@@ -189,6 +95,7 @@
             width: 60px;
             padding: 5px;
             margin-right: 10px;
+            font-family: cursive;
         }
 
         .cart-box button {
@@ -198,6 +105,7 @@
             cursor: pointer;
             font-weight: bold;
             border-radius: 4px;
+            font-family: cursive;
         }
 
         .cart-box button:hover {
@@ -206,20 +114,24 @@
 
         .reviews {
             margin-top: 30px;
+            font-family: cursive;
         }
 
         .review {
             border-top: 1px solid #ddd;
             padding: 10px 0;
+            font-family: cursive;
         }
 
         .review strong {
             display: block;
+            font-family: cursive;
         }
 
         .review span {
             color: #ff9800;
             font-size: 14px;
+            font-family: cursive;
         }
 
         .back-btn {
@@ -227,6 +139,8 @@
             margin-top: 20px;
             text-decoration: none;
             color: #1976d2;
+            font-family: cursive;
+            font-weight: bold;
         }
 
         @media (max-width: 768px) {
